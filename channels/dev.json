@@ -1,13 +1,12 @@
 {
-  "schemaVersion": "1.0.0",
+  "approvalId": "approval-rxscan-core-1.7.0@2026.07.21.1+28851b2c1ad4",
   "channel": "dev",
-  "state": "uninitialized",
-  "generation": 0,
-  "releaseId": null,
-  "manifestPath": null,
-  "manifestSha256": null,
-  "promotedAt": null,
-  "approvalId": null,
+  "generation": 1,
+  "manifestPath": "releases/rxscan-core-1.7.0@2026.07.21.1+28851b2c1ad4/manifest.json",
+  "manifestSha256": "4b031060ac32fdfe4982a8c03bcba153784595ad168a10b1457ffa387963ad9d",
   "previousReleaseId": null,
-  "rollbackReason": null
+  "promotedAt": "2026-07-21T20:14:30Z",
+  "releaseId": "rxscan-core-1.7.0@2026.07.21.1+28851b2c1ad4",
+  "rollbackReason": null,
+  "schemaVersion": "1.0.0"
 }
