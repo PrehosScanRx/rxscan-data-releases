@@ -7,9 +7,14 @@ This repository is the publication boundary between RxScan Data and its consumer
 ## Repository layout
 
 ```text
+approvals/
+  README.md
 channels/
   dev.json
   stable.json
+registry/
+  events/
+    README.md
 releases/
   README.md
 schema/
@@ -18,6 +23,8 @@ schema/
 ```
 
 - `channels/dev.json` and `channels/stable.json` are the only mutable distribution pointers.
+- `approvals/<releaseId>.json` will contain immutable approval evidence.
+- `registry/events/` will contain append-only lifecycle events.
 - `releases/<releaseId>/` will contain immutable, versioned release artifacts.
 - `schema/` contains only the public JSON contracts required to verify releases.
 
