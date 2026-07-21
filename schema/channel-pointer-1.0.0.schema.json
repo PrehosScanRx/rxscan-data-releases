@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.rxscan.ca/publication/channel-pointer-1.0.0.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "channel", "releaseId", "manifestPath", "manifestSha256", "promotedAt", "approvalId", "generation", "previousReleaseId", "rollbackReason"],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "channel": { "enum": ["dev", "stable"] },
+    "releaseId": { "type": "string" },
+    "manifestPath": { "type": "string", "pattern": "^releases/[A-Za-z0-9@+._-]+/manifest\\.json$" },
+    "manifestSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "promotedAt": { "type": "string", "format": "date-time" },
+    "approvalId": { "type": ["string", "null"] },
+    "generation": { "type": "integer", "minimum": 1 },
+    "previousReleaseId": { "type": ["string", "null"] },
+    "rollbackReason": { "type": ["string", "null"] }
+  }
+}

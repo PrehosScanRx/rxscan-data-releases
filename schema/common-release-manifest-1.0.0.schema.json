@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.rxscan.ca/publication/common-release-manifest-1.0.0.schema.json",
+  "title": "RxScan common consumer release manifest 1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "releaseId", "coreVersion", "generatedAt", "sourceRepository", "sourceCommit", "releaseChannel", "approvalState", "compatibility", "profiles", "files", "previousReleaseId", "rollbackTarget", "provenance", "warnings", "releaseNotes"],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "releaseId": { "type": "string", "pattern": "^rxscan-core-[0-9]+\\.[0-9]+\\.[0-9]+@[0-9]{4}\\.[0-9]{2}\\.[0-9]{2}\\.[1-9][0-9]*\\+[a-f0-9]{12}$" },
+    "coreVersion": { "$ref": "#/$defs/semver" },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "sourceRepository": { "const": "PrehosScanRx/RxScan-data" },
+    "sourceCommit": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
+    "releaseChannel": { "const": "unassigned" },
+    "approvalState": { "const": "candidate" },
+    "compatibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["manifestSchema", "profiles", "offlineCapable"],
+      "properties": {
+        "manifestSchema": { "const": "1.x" },
+        "profiles": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["paramedic@1", "guide@1"],
+          "properties": {
+            "paramedic@1": { "$ref": "#/$defs/appCompatibility" },
+            "guide@1": { "$ref": "#/$defs/appCompatibility" }
+          }
+        },
+        "offlineCapable": { "const": true }
+      }
+    },
+    "profiles": {
+      "type": "array", "minItems": 2, "maxItems": 2,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["name", "version", "path"],
+        "properties": {
+          "name": { "enum": ["guide", "paramedic"] },
+          "version": { "const": "1.0.0" },
+          "path": { "$ref": "#/$defs/relativePath" }
+        }
+      }
+    },
+    "files": {
+      "type": "array", "minItems": 5,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["path", "role", "mediaType", "bytes", "sha256", "recordCount", "required"],
+        "properties": {
+          "path": { "$ref": "#/$defs/relativePath" },
+          "role": { "enum": ["consumer-profile", "provenance", "validation-evidence", "comparison-evidence"] },
+          "mediaType": { "const": "application/json" },
+          "bytes": { "type": "integer", "minimum": 0 },
+          "sha256": { "$ref": "#/$defs/sha256" },
+          "recordCount": { "type": "integer", "minimum": 0 },
+          "languages": { "type": "array", "uniqueItems": true, "items": { "enum": ["en-CA", "fr-CA"] } },
+          "required": { "type": "boolean" }
+        }
+      }
+    },
+    "previousReleaseId": { "type": ["string", "null"] },
+    "rollbackTarget": { "type": ["string", "null"] },
+    "provenance": { "type": "array" },
+    "warnings": { "type": "array", "items": { "type": "object" } },
+    "releaseNotes": {
+      "type": "object", "additionalProperties": false,
+      "required": ["fr-CA", "en-CA"],
+      "properties": { "fr-CA": { "type": "string" }, "en-CA": { "type": "string" } }
+    }
+  },
+  "$defs": {
+    "semver": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "relativePath": { "type": "string", "pattern": "^(?![A-Za-z]:)(?![/\\\\])(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9@._/-]+$" },
+    "appCompatibility": {
+      "type": "object", "additionalProperties": false,
+      "required": ["minimumAppVersion"],
+      "properties": { "minimumAppVersion": { "$ref": "#/$defs/semver" } }
+    }
+  }
+}

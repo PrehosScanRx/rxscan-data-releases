@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/PrehosScanRx/rxscan-data-releases/main/schema/empty-channel-pointer-1.0.0.schema.json",
+  "title": "Uninitialized RxScan release channel",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "channel",
+    "state",
+    "generation",
+    "releaseId",
+    "manifestPath",
+    "manifestSha256",
+    "promotedAt",
+    "approvalId",
+    "previousReleaseId",
+    "rollbackReason"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "channel": { "enum": ["dev", "stable"] },
+    "state": { "const": "uninitialized" },
+    "generation": { "const": 0 },
+    "releaseId": { "type": "null" },
+    "manifestPath": { "type": "null" },
+    "manifestSha256": { "type": "null" },
+    "promotedAt": { "type": "null" },
+    "approvalId": { "type": "null" },
+    "previousReleaseId": { "type": "null" },
+    "rollbackReason": { "type": "null" }
+  }
+}
