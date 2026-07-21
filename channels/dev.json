@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "1.0.0",
+  "channel": "dev",
+  "state": "uninitialized",
+  "generation": 0,
+  "releaseId": null,
+  "manifestPath": null,
+  "manifestSha256": null,
+  "promotedAt": null,
+  "approvalId": null,
+  "previousReleaseId": null,
+  "rollbackReason": null
+}
