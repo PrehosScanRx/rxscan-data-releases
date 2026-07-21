@@ -1,0 +1,106 @@
+name: Validate release registry
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate immutable release registry
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate public structure and JSON
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import hashlib
+          import json
+          import re
+          from pathlib import Path
+
+          root = Path(".")
+          allowed = {".git", ".github", "approvals", "channels", "registry", "releases", "schema", "LICENSE", "README.md"}
+          unexpected = sorted(item.name for item in root.iterdir() if item.name not in allowed)
+          assert not unexpected, f"Unexpected public content: {unexpected}"
+
+          for document in root.rglob("*.json"):
+            json.loads(document.read_text(encoding="utf-8"))
+
+          for channel in ("dev", "stable"):
+            pointer = json.loads((root / "channels" / f"{channel}.json").read_text(encoding="utf-8"))
+            assert pointer["channel"] == channel
+            if pointer.get("state") == "uninitialized":
+              assert pointer["generation"] == 0
+              for key in ("releaseId", "manifestPath", "manifestSha256", "promotedAt", "approvalId", "previousReleaseId", "rollbackReason"):
+                assert pointer[key] is None, f"Uninitialized {channel} has {key}"
+            else:
+              required = {"schemaVersion", "channel", "releaseId", "manifestPath", "manifestSha256", "promotedAt", "approvalId", "generation", "previousReleaseId", "rollbackReason"}
+              assert set(pointer) == required, f"Invalid active {channel} keys"
+              assert isinstance(pointer["generation"], int) and pointer["generation"] > 0
+              assert re.fullmatch(r"[a-f0-9]{64}", pointer["manifestSha256"])
+              assert pointer["manifestPath"] == f"releases/{pointer['releaseId']}/manifest.json"
+
+          for release_dir in sorted((root / "releases").iterdir()):
+            if release_dir.name == "README.md":
+              continue
+            assert release_dir.is_dir(), f"Unexpected file in releases/: {release_dir}"
+            manifest_path = release_dir / "manifest.json"
+            assert manifest_path.is_file(), f"Missing manifest: {release_dir.name}"
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            assert manifest["releaseId"] == release_dir.name
+            for entry in manifest["files"]:
+              relative = Path(entry["path"])
+              assert not relative.is_absolute() and ".." not in relative.parts
+              artifact = release_dir / relative
+              assert artifact.is_file(), f"Missing artifact: {artifact}"
+              payload = artifact.read_bytes()
+              assert len(payload) == entry["bytes"], f"Byte mismatch: {artifact}"
+              assert hashlib.sha256(payload).hexdigest() == entry["sha256"], f"Hash mismatch: {artifact}"
+
+          print("Public release registry structure is valid")
+          PY
+
+      - name: Reject mutation of append-only content
+        if: github.event_name != 'workflow_dispatch'
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BEFORE_SHA: ${{ github.event.before }}
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          if [[ "$EVENT_NAME" == "pull_request" ]]; then
+            git fetch origin "$BASE_REF" --depth=1
+            BASE_SHA="$(git merge-base HEAD "origin/$BASE_REF")"
+          else
+            BASE_SHA="$BEFORE_SHA"
+          fi
+          if [[ -z "$BASE_SHA" || "$BASE_SHA" =~ ^0+$ ]]; then
+            echo "Initial repository commit; no previous append-only content."
+            exit 0
+          fi
+          failed=0
+          while IFS=$'\t' read -r status first second; do
+            for path in "$first" "$second"; do
+              [[ -z "$path" ]] && continue
+              case "$path" in
+                releases/README.md|approvals/README.md|registry/events/README.md|schema/README.md) continue ;;
+                releases/*|approvals/*.json|registry/events/*.json|schema/*.schema.json)
+                  if [[ "$status" != A* ]]; then
+                    echo "Append-only path cannot be modified or deleted: $status $path"
+                    failed=1
+                  fi
+                  ;;
+              esac
+            done
+          done < <(git diff --name-status "$BASE_SHA" HEAD)
+          exit "$failed"
