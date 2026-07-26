@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.rxscan.ca/publication/recognition-stable-release-1.0.0.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "releaseId", "sourceCommit", "candidateSourceCommit", "manifestSha256", "profileSha256", "generatedAt", "promotedAt", "identityCount", "termCount", "collisionCount", "status", "consumptionAuthorized", "approvalId", "approvers", "generation", "previousReleaseId", "rollback", "files"],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "releaseId": { "type": "string", "pattern": "^recognition-common-[0-9]{4}-[0-9]{2}-[0-9]{2}-[0-9]{2}$" },
+    "sourceCommit": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
+    "candidateSourceCommit": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
+    "manifestSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "profileSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "promotedAt": { "type": "string", "format": "date-time" },
+    "identityCount": { "type": "integer", "minimum": 0 },
+    "termCount": { "type": "integer", "minimum": 0 },
+    "collisionCount": { "type": "integer", "minimum": 0 },
+    "status": { "const": "stable" },
+    "consumptionAuthorized": { "const": true },
+    "approvalId": { "type": "string", "minLength": 1 },
+    "approvers": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["data", "paramedic"],
+      "properties": {
+        "data": { "type": "string", "minLength": 1 },
+        "paramedic": { "type": "string", "minLength": 1 }
+      }
+    },
+    "generation": { "type": "integer", "minimum": 1 },
+    "previousReleaseId": { "type": ["string", "null"] },
+    "rollback": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["isRollback", "fromReleaseId", "reason"],
+      "properties": {
+        "isRollback": { "type": "boolean" },
+        "fromReleaseId": { "type": ["string", "null"] },
+        "reason": { "type": ["string", "null"] }
+      }
+    },
+    "files": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "bytes", "sha256"],
+        "properties": {
+          "path": { "type": "string", "pattern": "^(candidate-manifest|recognition-profile)\\.json$" },
+          "bytes": { "type": "integer", "minimum": 1 },
+          "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+        }
+      }
+    }
+  }
+}

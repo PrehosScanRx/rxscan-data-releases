@@ -20,6 +20,11 @@ releases/
 schema/
   README.md
   *.schema.json
+recognition/
+  channels/
+    stable.json
+  releases/
+    <releaseId>/
 ```
 
 - `channels/dev.json` and `channels/stable.json` are the only mutable distribution pointers.
@@ -27,12 +32,17 @@ schema/
 - `registry/events/` will contain append-only lifecycle events.
 - `releases/<releaseId>/` will contain immutable, versioned release artifacts.
 - `schema/` contains only the public JSON contracts required to verify releases.
+- `recognition/channels/stable.json` is the mutable Recognition Stable pointer.
+- `recognition/releases/<releaseId>/` contains immutable Recognition artifacts
+  copied byte-for-byte from an authorized RxScan Data promotion.
 
 Both channels are intentionally uninitialized. No DEV or stable release is published by this infrastructure bootstrap.
 
 ## Immutability
 
 Release directories are append-only. Once `releases/<releaseId>/` is merged, its files must never be changed, replaced, moved, or deleted. Corrections require a new release identifier. Rollbacks update a channel pointer to an already approved release; they do not rewrite release bytes.
+
+The same append-only rule applies to `recognition/releases/<releaseId>/`.
 
 Repository protection and CI reject modifications or deletions beneath an existing release path. Channel pointers remain reviewable, short-lived metadata and must reference manifests by SHA-256.
 

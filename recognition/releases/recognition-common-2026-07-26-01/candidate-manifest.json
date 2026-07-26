@@ -1,0 +1,45 @@
+{
+  "collisionCount": 8,
+  "consumptionAuthorized": false,
+  "files": [
+    {
+      "bytes": 6969722,
+      "path": "recognition-profile.json",
+      "sha256": "e07e7d0517176230a13d87404d939aaade0a4d89c49298c2c448e9fef19f2c63"
+    }
+  ],
+  "generatedAt": "2026-07-26T00:00:00.000Z",
+  "historicalOcrVariantCount": 10547,
+  "identityCount": 493,
+  "profile": "recognition-common",
+  "profileVersion": "1.0.0",
+  "releaseId": "recognition-common-2026-07-26-01",
+  "sourceCommit": "4f7972f7d7b28868f456e87d13cb4a714555daea",
+  "sourceInputs": [
+    {
+      "path": "catalog/medications.json",
+      "sha256": "738f01f79bf551a3526953e431ee15da5a352b45fec3a12b17851a75aec351fb"
+    },
+    {
+      "path": "catalog/brands.json",
+      "sha256": "a9e3fff1c0e93e98754d2447d834b60a90318668f2a93faa3edd28c16d830d25"
+    },
+    {
+      "path": "catalog/relationships.json",
+      "sha256": "a1ebc7aebf877b88cbb9d023b782f6d74aa5d9a8be4c874c0a2b69a7f38f0ea1"
+    },
+    {
+      "path": "catalog/aliases.json",
+      "sha256": "0ca4e0d466867633b905ef35bd0da518913d25b554fa2d11cb63a080e8224b0f"
+    },
+    {
+      "path": "recognition/historical-paramedic-ocr-variants.json",
+      "sha256": "7682b6ca830e10f8d0e0a39723e065a564d2ef543f47c5447fe6ff03ff647883"
+    },
+    {
+      "path": "recognition/collision-decisions.json",
+      "sha256": "2e01f91d90a795278111f110d654cd1403658c4954725ab96393b03de824f1c8"
+    }
+  ],
+  "status": "candidate"
+}
