@@ -1,0 +1,9 @@
+{
+  "coreVersion": "2.0.0",
+  "recordCounts": {
+    "medications": 493
+  },
+  "schemaVersion": "1.0.0",
+  "sourceCommit": "4f7972f7d7b28868f456e87d13cb4a714555daea",
+  "sourceRepository": "PrehosScanRx/RxScan-data"
+}
