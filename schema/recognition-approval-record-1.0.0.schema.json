@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.rxscan.ca/publication/recognition-approval-record-1.0.0.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "approvalId", "releaseId", "sourceCommit", "manifestSha256", "profileSha256", "approvedAt", "approvers"],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "approvalId": { "type": "string", "minLength": 1 },
+    "releaseId": { "type": "string", "pattern": "^recognition-common-[0-9]{4}-[0-9]{2}-[0-9]{2}-[0-9]{2}$" },
+    "sourceCommit": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
+    "manifestSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "profileSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "approvedAt": { "type": "string", "format": "date-time" },
+    "approvers": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["data", "paramedic"],
+      "properties": {
+        "data": { "type": "string", "minLength": 1 },
+        "paramedic": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

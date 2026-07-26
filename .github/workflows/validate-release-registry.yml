@@ -29,7 +29,7 @@ jobs:
           from pathlib import Path
 
           root = Path(".")
-          allowed = {".git", ".github", "approvals", "channels", "registry", "releases", "schema", "LICENSE", "README.md"}
+          allowed = {".git", ".github", ".gitattributes", "approvals", "channels", "registry", "releases", "recognition", "schema", "LICENSE", "README.md"}
           unexpected = sorted(item.name for item in root.iterdir() if item.name not in allowed)
           assert not unexpected, f"Unexpected public content: {unexpected}"
 
@@ -67,6 +67,95 @@ jobs:
               assert len(payload) == entry["bytes"], f"Byte mismatch: {artifact}"
               assert hashlib.sha256(payload).hexdigest() == entry["sha256"], f"Hash mismatch: {artifact}"
 
+          recognition_pointer_path = root / "recognition" / "channels" / "stable.json"
+          recognition_pointer = json.loads(recognition_pointer_path.read_text(encoding="utf-8"))
+          release_id = recognition_pointer["releaseId"]
+          recognition_release = root / "recognition" / "releases" / release_id
+          expected_paths = {
+            "metadataPath": recognition_release / "stable-metadata.json",
+            "manifestPath": recognition_release / "candidate-manifest.json",
+            "profilePath": recognition_release / "recognition-profile.json",
+            "approvalPath": recognition_release / "approval.json",
+          }
+          assert recognition_pointer["schemaVersion"] == "1.0.0"
+          assert recognition_pointer["channel"] == "recognition-stable"
+          assert recognition_pointer["generation"] >= 1
+          assert recognition_pointer["consumptionAuthorized"] is True
+          assert recognition_pointer["status"] == "stable"
+          assert recognition_pointer["releasePath"] == recognition_pointer["metadataPath"]
+          for key, artifact in expected_paths.items():
+            relative = Path(recognition_pointer[key])
+            assert not relative.is_absolute() and ".." not in relative.parts, f"Unsafe Recognition path: {key}"
+            assert relative.as_posix() == artifact.as_posix(), f"Unexpected Recognition path: {key}"
+            assert artifact.is_file(), f"Missing Recognition artifact: {artifact}"
+
+          metadata_bytes = expected_paths["metadataPath"].read_bytes()
+          manifest_bytes = expected_paths["manifestPath"].read_bytes()
+          profile_bytes = expected_paths["profilePath"].read_bytes()
+          metadata_hash = hashlib.sha256(metadata_bytes).hexdigest()
+          manifest_hash = hashlib.sha256(manifest_bytes).hexdigest()
+          profile_hash = hashlib.sha256(profile_bytes).hexdigest()
+          assert metadata_hash == recognition_pointer["stableMetadataSha256"]
+          assert manifest_hash == recognition_pointer["manifestSha256"]
+          assert profile_hash == recognition_pointer["profileSha256"]
+
+          metadata = json.loads(metadata_bytes)
+          manifest = json.loads(manifest_bytes)
+          profile = json.loads(profile_bytes)
+          approval = json.loads(expected_paths["approvalPath"].read_text(encoding="utf-8"))
+          shared = {
+            "releaseId": release_id,
+            "sourceCommit": recognition_pointer["sourceCommit"],
+            "manifestSha256": manifest_hash,
+            "profileSha256": profile_hash,
+            "approvalId": recognition_pointer["approvalId"],
+          }
+          for key, value in shared.items():
+            assert metadata[key] == value, f"Recognition metadata mismatch: {key}"
+            if key in approval:
+              assert approval[key] == value, f"Recognition approval mismatch: {key}"
+          assert metadata["generation"] == recognition_pointer["generation"]
+          assert metadata["previousReleaseId"] == recognition_pointer["previousReleaseId"]
+          assert metadata["rollback"] == recognition_pointer["rollback"]
+          assert metadata["consumptionAuthorized"] is True
+          assert metadata["status"] == "stable"
+          assert manifest["releaseId"] == release_id
+          assert manifest["sourceCommit"] == metadata["candidateSourceCommit"]
+          assert manifest["consumptionAuthorized"] is False
+          assert manifest["status"] == "candidate"
+          assert manifest["files"] == [{
+            "bytes": len(profile_bytes),
+            "path": "recognition-profile.json",
+            "sha256": profile_hash,
+          }]
+          assert profile["releaseId"] == release_id
+          assert profile["sourceCommit"] == metadata["candidateSourceCommit"]
+          assert profile["consumptionAuthorized"] is False
+          assert profile["status"] == "candidate"
+
+          identities = profile["identities"]
+          collisions = profile["collisions"]
+          terms = [term for identity in identities for term in identity["terms"]]
+          historical = [
+            term for term in terms
+            if term["type"] == "ocr_variant" and term["provenance"] == "historical_paramedic"
+          ]
+          active = [term for term in historical if term["status"] == "approved"]
+          conflicting_review = [
+            term for term in terms
+            if term["status"] == "review" and term["conflictingRxIds"]
+          ]
+          rx_ids = [identity["rxId"] for identity in identities]
+          assert len(identities) == len(set(rx_ids)) == metadata["identityCount"] == recognition_pointer["identityCount"] == 493
+          assert all(re.fullmatch(r"RX_[0-9]{3}", rx_id) for rx_id in rx_ids)
+          assert len(historical) == metadata["termCount"] == recognition_pointer["termCount"] == 10547
+          assert profile["statistics"]["historicalOcrVariantCount"] == len(historical)
+          assert len(active) == 10532
+          assert len(collisions) == metadata["collisionCount"] == recognition_pointer["collisionCount"] == 8
+          assert profile["statistics"]["collisionCount"] == len(collisions)
+          assert len(conflicting_review) == 24
+          assert approval["approvers"] == metadata["approvers"]
+
           print("Public release registry structure is valid")
           PY
 
@@ -94,7 +183,7 @@ jobs:
               [[ -z "$path" ]] && continue
               case "$path" in
                 releases/README.md|approvals/README.md|registry/events/README.md|schema/README.md) continue ;;
-                releases/*|approvals/*.json|registry/events/*.json|schema/*.schema.json)
+                releases/*|recognition/releases/*|approvals/*.json|registry/events/*.json|schema/*.schema.json)
                   if [[ "$status" != A* ]]; then
                     echo "Append-only path cannot be modified or deleted: $status $path"
                     failed=1
@@ -104,3 +193,35 @@ jobs:
             done
           done < <(git diff --name-status "$BASE_SHA" HEAD)
           exit "$failed"
+
+      - name: Enforce monotone Recognition Stable generation
+        if: github.event_name != 'workflow_dispatch'
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BEFORE_SHA: ${{ github.event.before }}
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          if [[ "$EVENT_NAME" == "pull_request" ]]; then
+            BASE_SHA="$(git merge-base HEAD "origin/$BASE_REF")"
+          else
+            BASE_SHA="$BEFORE_SHA"
+          fi
+          if git cat-file -e "$BASE_SHA:recognition/channels/stable.json" 2>/dev/null; then
+            python3 - "$BASE_SHA" <<'PY'
+          import json
+          import subprocess
+          import sys
+          from pathlib import Path
+
+          base = json.loads(subprocess.check_output(
+              ["git", "show", f"{sys.argv[1]}:recognition/channels/stable.json"],
+              text=True,
+          ))
+          current = json.loads(Path("recognition/channels/stable.json").read_text(encoding="utf-8"))
+          if current != base:
+              assert current["generation"] == base["generation"] + 1, "Recognition generation must increase by one"
+              if not current["rollback"]["isRollback"]:
+                  assert current["previousReleaseId"] == base["releaseId"], "Recognition previousReleaseId mismatch"
+          PY
+          fi

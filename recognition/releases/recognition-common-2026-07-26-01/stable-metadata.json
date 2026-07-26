@@ -1,0 +1,39 @@
+{
+  "approvalId": "recognition-common-2026-07-26-01-mathieu-fortin-data-paramedic",
+  "approvers": {
+    "data": "Mathieu Fortin — RxScan Technologies",
+    "paramedic": "Mathieu Fortin — RxScan Technologies"
+  },
+  "candidateSourceCommit": "4f7972f7d7b28868f456e87d13cb4a714555daea",
+  "collisionCount": 8,
+  "consumptionAuthorized": true,
+  "files": [
+    {
+      "bytes": 1431,
+      "path": "candidate-manifest.json",
+      "sha256": "9a928596b01eee5a29ecf6887cc33a8d1d1d1b1bf4db4186db555784b5c12f47"
+    },
+    {
+      "bytes": 6969722,
+      "path": "recognition-profile.json",
+      "sha256": "e07e7d0517176230a13d87404d939aaade0a4d89c49298c2c448e9fef19f2c63"
+    }
+  ],
+  "generatedAt": "2026-07-26T00:00:00.000Z",
+  "generation": 1,
+  "identityCount": 493,
+  "manifestSha256": "9a928596b01eee5a29ecf6887cc33a8d1d1d1b1bf4db4186db555784b5c12f47",
+  "previousReleaseId": null,
+  "profileSha256": "e07e7d0517176230a13d87404d939aaade0a4d89c49298c2c448e9fef19f2c63",
+  "promotedAt": "2026-07-26T06:20:43.169Z",
+  "releaseId": "recognition-common-2026-07-26-01",
+  "rollback": {
+    "fromReleaseId": null,
+    "isRollback": false,
+    "reason": null
+  },
+  "schemaVersion": "1.0.0",
+  "sourceCommit": "b8b81b2e2bb8f6890cfc0fb54b15c311f3761633",
+  "status": "stable",
+  "termCount": 10547
+}

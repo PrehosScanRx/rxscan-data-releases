@@ -1,0 +1,29 @@
+{
+  "approvalId": "recognition-common-2026-07-26-01-mathieu-fortin-data-paramedic",
+  "approvalPath": "recognition/releases/recognition-common-2026-07-26-01/approval.json",
+  "channel": "recognition-stable",
+  "collisionCount": 8,
+  "consumptionAuthorized": true,
+  "generatedAt": "2026-07-26T00:00:00.000Z",
+  "generation": 1,
+  "identityCount": 493,
+  "manifestPath": "recognition/releases/recognition-common-2026-07-26-01/candidate-manifest.json",
+  "manifestSha256": "9a928596b01eee5a29ecf6887cc33a8d1d1d1b1bf4db4186db555784b5c12f47",
+  "metadataPath": "recognition/releases/recognition-common-2026-07-26-01/stable-metadata.json",
+  "previousReleaseId": null,
+  "profilePath": "recognition/releases/recognition-common-2026-07-26-01/recognition-profile.json",
+  "profileSha256": "e07e7d0517176230a13d87404d939aaade0a4d89c49298c2c448e9fef19f2c63",
+  "promotedAt": "2026-07-26T06:20:43.169Z",
+  "releaseId": "recognition-common-2026-07-26-01",
+  "releasePath": "recognition/releases/recognition-common-2026-07-26-01/stable-metadata.json",
+  "rollback": {
+    "fromReleaseId": null,
+    "isRollback": false,
+    "reason": null
+  },
+  "schemaVersion": "1.0.0",
+  "sourceCommit": "b8b81b2e2bb8f6890cfc0fb54b15c311f3761633",
+  "stableMetadataSha256": "13e93618d964410f5879c09e46bebf9b2293a23b72abc513fd4f30f5d1e0b12b",
+  "status": "stable",
+  "termCount": 10547
+}
