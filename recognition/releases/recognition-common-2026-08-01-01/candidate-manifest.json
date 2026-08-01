@@ -1,0 +1,52 @@
+{
+  "collisionCount": 10,
+  "consumptionAuthorized": false,
+  "files": [
+    {
+      "bytes": 7170428,
+      "path": "recognition-profile.json",
+      "sha256": "6fa981077fd48caa5536072abc053f02b0e90e924114859a691f8f189b996377"
+    }
+  ],
+  "generatedAt": "2026-08-01T19:47:00.000Z",
+  "generatedOcrApprovalId": "OCR_STRUCTURAL_SAFE_2026_07_26_01",
+  "generatedOcrVariantCount": 93,
+  "historicalOcrVariantCount": 10547,
+  "identityCount": 494,
+  "profile": "recognition-common",
+  "profileVersion": "1.0.0",
+  "releaseId": "recognition-common-2026-08-01-01",
+  "sourceCommit": "6f5bad39349f9929b6a0846a5c6dd2be4f7620d1",
+  "sourceInputs": [
+    {
+      "path": "catalog/medications.json",
+      "sha256": "dd0ac2fa3261c0d591c33a26032ba5139c9c496d5ad882ccf8cecff2c38a8e0b"
+    },
+    {
+      "path": "catalog/brands.json",
+      "sha256": "469e42650a63bdf6482cab43ead316bd531a8da63decbaea4afe39f3c79fe1ad"
+    },
+    {
+      "path": "catalog/relationships.json",
+      "sha256": "ba89e671d63c0be3f3061121a6cc93f7885765d71c7d5493a5a1d2ef658b7e06"
+    },
+    {
+      "path": "catalog/aliases.json",
+      "sha256": "11fb2043af36ed077c4e188759e3b3ac313a687de46b42263b25006aa9dcb7cd"
+    },
+    {
+      "path": "recognition/historical-paramedic-ocr-variants.json",
+      "sha256": "bfc84e8c4d7738d080b9f925832192049a5d9028c39eace96d8c70b1111e1047"
+    },
+    {
+      "path": "recognition/generated-ocr-variants.json",
+      "sha256": "7403c0d0734cbc0478f49c38e353a5b4f9021b7924ffa1e32da8121092f0cf6f"
+    },
+    {
+      "path": "recognition/collision-decisions.json",
+      "sha256": "c7923f01bbab0feb4e13ac3d9844d520f5b5a936cee3b79997404a48d546c811"
+    }
+  ],
+  "status": "candidate",
+  "totalOcrVariantCount": 10640
+}
