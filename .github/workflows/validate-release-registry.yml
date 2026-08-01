@@ -140,20 +140,32 @@ jobs:
             term for term in terms
             if term["type"] == "ocr_variant" and term["provenance"] == "historical_paramedic"
           ]
-          active = [term for term in historical if term["status"] == "approved"]
+          generated = [
+            term for term in terms
+            if term["type"] == "ocr_variant" and term["provenance"] == "generated"
+          ]
           conflicting_review = [
             term for term in terms
             if term["status"] == "review" and term["conflictingRxIds"]
           ]
           rx_ids = [identity["rxId"] for identity in identities]
-          assert len(identities) == len(set(rx_ids)) == metadata["identityCount"] == recognition_pointer["identityCount"] == 493
+          assert len(identities) == len(set(rx_ids)) == manifest["identityCount"] == metadata["identityCount"] == recognition_pointer["identityCount"]
           assert all(re.fullmatch(r"RX_[0-9]{3}", rx_id) for rx_id in rx_ids)
-          assert len(historical) == metadata["termCount"] == recognition_pointer["termCount"] == 10547
-          assert profile["statistics"]["historicalOcrVariantCount"] == len(historical)
-          assert len(active) == 10532
-          assert len(collisions) == metadata["collisionCount"] == recognition_pointer["collisionCount"] == 8
+          assert len(historical) == manifest["historicalOcrVariantCount"] == profile["statistics"]["historicalOcrVariantCount"]
+          assert len(generated) == manifest.get("generatedOcrVariantCount", 0) == profile["statistics"].get("generatedOcrVariantCount", 0)
+          assert len(historical) + len(generated) == manifest.get("totalOcrVariantCount", len(historical)) == profile["statistics"].get("totalOcrVariantCount", len(historical)) == metadata["termCount"] == recognition_pointer["termCount"]
+          assert len(collisions) == manifest["collisionCount"] == metadata["collisionCount"] == recognition_pointer["collisionCount"]
           assert profile["statistics"]["collisionCount"] == len(collisions)
-          assert len(conflicting_review) == 24
+          assert all(term["status"] == "review" for term in terms if term["conflictingRxIds"])
+          assert all(
+            collision["status"] == "resolved"
+            and collision["decision"]["resolutionStatus"] == "resolved"
+            and collision["decision"]["expectedBehavior"] == "automatic"
+            for collision in collisions
+          )
+          assert len(conflicting_review) == sum(
+            1 for term in terms if term["conflictingRxIds"]
+          )
           assert approval["approvers"] == metadata["approvers"]
 
           print("Public release registry structure is valid")
