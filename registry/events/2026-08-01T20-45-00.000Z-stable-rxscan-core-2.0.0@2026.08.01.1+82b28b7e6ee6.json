@@ -1,0 +1,9 @@
+{
+  "actor": "Mathieu Fortin — RxScan Technologies",
+  "eventId": "2026-08-01T20-45-00.000Z-stable-rxscan-core-2.0.0@2026.08.01.1+82b28b7e6ee6",
+  "occurredAt": "2026-08-01T20:45:00.000Z",
+  "reason": "Approved stable promotion",
+  "releaseId": "rxscan-core-2.0.0@2026.08.01.1+82b28b7e6ee6",
+  "schemaVersion": "1.0.0",
+  "state": "stable"
+}
