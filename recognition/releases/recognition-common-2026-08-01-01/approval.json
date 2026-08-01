@@ -1,0 +1,13 @@
+{
+  "approvalId": "recognition-common-2026-08-01-01-6f5bad3-engine-aea23ba-mathieu-fortin-data-paramedic",
+  "approvedAt": "2026-08-01T20:40:00.000Z",
+  "approvers": {
+    "data": "Mathieu Fortin — RxScan Technologies",
+    "paramedic": "Mathieu Fortin — RxScan Technologies"
+  },
+  "manifestSha256": "d29cf68f097c22a131f116b61f95659448a0f90f514cde9235ea59236debd622",
+  "profileSha256": "6fa981077fd48caa5536072abc053f02b0e90e924114859a691f8f189b996377",
+  "releaseId": "recognition-common-2026-08-01-01",
+  "schemaVersion": "1.0.0",
+  "sourceCommit": "6f5bad39349f9929b6a0846a5c6dd2be4f7620d1"
+}
