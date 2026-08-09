@@ -1,0 +1,63 @@
+{
+  "approvedRecognitionEntryCount": 4,
+  "collisionCount": 8,
+  "consumptionAuthorized": false,
+  "files": [
+    {
+      "bytes": 7351084,
+      "path": "recognition-profile.json",
+      "sha256": "70c3c8de5931294e5f74cfdceb7622a41e7e531a71dc164cf835b76b424071a9"
+    }
+  ],
+  "generatedAt": "2026-08-09T14:46:15.442Z",
+  "generatedOcrApprovalId": "OCR_STRUCTURAL_SAFE_2026_07_26_01",
+  "generatedOcrVariantCount": 93,
+  "historicalOcrVariantCount": 10547,
+  "historicalTargetOverrideCount": 21,
+  "identityCount": 611,
+  "profile": "recognition-common",
+  "profileVersion": "1.0.0",
+  "releaseId": "recognition-common-2026-08-09-01",
+  "sourceCommit": "2b4308de0bc887bd4d8616db2ee5f41c203638a2",
+  "sourceInputs": [
+    {
+      "path": "catalog/medications.json",
+      "sha256": "9f8d84a847026e71002599d2a70570c3c74720c7133dc36681f7bb58ab864156"
+    },
+    {
+      "path": "catalog/brands.json",
+      "sha256": "0d6f12bfdafed7e3ff20c849fff7cd721480ea4d71d1cbf50b66a8e2aadeccff"
+    },
+    {
+      "path": "catalog/relationships.json",
+      "sha256": "c75c175730f1cb1372e1687d526040f114e0d8260484bf6849cd088e6aa8af69"
+    },
+    {
+      "path": "catalog/aliases.json",
+      "sha256": "b592146b4124ceb4ca8f7cc3f238f72a8c6687d8860cf26d57baf08a079206bb"
+    },
+    {
+      "path": "recognition/approved-entries.json",
+      "sha256": "0de6efea14749274a146eebd5f10aa5247b645f146080abe5148a2bd60cc4378"
+    },
+    {
+      "path": "recognition/historical-paramedic-ocr-variants.json",
+      "sha256": "7682b6ca830e10f8d0e0a39723e065a564d2ef543f47c5447fe6ff03ff647883"
+    },
+    {
+      "path": "recognition/historical-target-overrides.json",
+      "sha256": "85f1b61f6579d87d26fb56520c4e134220cfcd44f5117effae2a67eeeabcb0e3"
+    },
+    {
+      "path": "recognition/generated-ocr-variants.json",
+      "sha256": "8a88104744cf7915f7eb7de0b16a769e9964c70b9d118a6f96af5d4119c4b3ea"
+    },
+    {
+      "path": "recognition/collision-decisions.json",
+      "sha256": "06b8ce0889306953ec9511d81a854a2daba6a8275d4b56e863512366e765023a"
+    }
+  ],
+  "status": "candidate",
+  "totalOcrVariantCount": 10640,
+  "totalRecognitionVariantCount": 10644
+}
