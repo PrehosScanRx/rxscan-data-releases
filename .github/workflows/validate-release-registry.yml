@@ -144,6 +144,10 @@ jobs:
             term for term in terms
             if term["type"] == "ocr_variant" and term["provenance"] == "generated"
           ]
+          approved_recognition = [
+            term for term in terms
+            if term.get("approvalInformation") is not None
+          ]
           conflicting_review = [
             term for term in terms
             if term["status"] == "review" and term["conflictingRxIds"]
@@ -153,7 +157,31 @@ jobs:
           assert all(re.fullmatch(r"RX_[0-9]{3}", rx_id) for rx_id in rx_ids)
           assert len(historical) == manifest["historicalOcrVariantCount"] == profile["statistics"]["historicalOcrVariantCount"]
           assert len(generated) == manifest.get("generatedOcrVariantCount", 0) == profile["statistics"].get("generatedOcrVariantCount", 0)
-          assert len(historical) + len(generated) == manifest.get("totalOcrVariantCount", len(historical)) == profile["statistics"].get("totalOcrVariantCount", len(historical)) == metadata["termCount"] == recognition_pointer["termCount"]
+          total_ocr = len(historical) + len(generated)
+          assert total_ocr == manifest.get("totalOcrVariantCount", len(historical)) == profile["statistics"].get("totalOcrVariantCount", len(historical))
+          extended_keys = {"approvedRecognitionEntryCount", "totalRecognitionVariantCount"}
+          extended_declared = any(
+            key in manifest or key in profile["statistics"]
+            for key in extended_keys
+          )
+          if extended_declared:
+            assert all(
+              key in manifest and key in profile["statistics"]
+              for key in extended_keys
+            ), "Extended Recognition counts must be declared together"
+            assert all(
+              term["type"] == "ocr_variant"
+              and term["provenance"] == "data"
+              and term["status"] == "approved"
+              for term in approved_recognition
+            ), "Approved Recognition entry term is malformed"
+            assert len(approved_recognition) == manifest["approvedRecognitionEntryCount"] == profile["statistics"]["approvedRecognitionEntryCount"]
+            total_recognition = total_ocr + len(approved_recognition)
+            assert total_recognition == manifest["totalRecognitionVariantCount"] == profile["statistics"]["totalRecognitionVariantCount"]
+            assert total_recognition == metadata["termCount"] == recognition_pointer["termCount"]
+          else:
+            assert not approved_recognition, "Approved Recognition entries require explicit extended counts"
+            assert total_ocr == metadata["termCount"] == recognition_pointer["termCount"]
           assert len(collisions) == manifest["collisionCount"] == metadata["collisionCount"] == recognition_pointer["collisionCount"]
           assert profile["statistics"]["collisionCount"] == len(collisions)
           assert all(term["status"] == "review" for term in terms if term["conflictingRxIds"])
