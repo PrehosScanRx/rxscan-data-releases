@@ -1,0 +1,21 @@
+{
+  "approvalId": "approval-rxscan-core-2.10.0@2026.08.08.1+1f082bcf180b",
+  "approvedAt": "2026-08-09T01:36:50.003Z",
+  "approvers": {
+    "data": "Mathieu Fortin — RxScan Technologies",
+    "guide": "Mathieu Fortin — RxScan Technologies",
+    "paramedic": "Mathieu Fortin — RxScan Technologies"
+  },
+  "comparison": {
+    "baselineReleaseId": "rxscan-core-2.0.0@2026.08.06.1+59fe6cd1f33f",
+    "status": "compatible"
+  },
+  "consumerTests": {
+    "guide": "passed",
+    "paramedic": "passed"
+  },
+  "manifestSha256": "3c9bcc1c5dceafa94090a7fed600d9e8b3a985f9145fe9e5a2bbe95a6138dd51",
+  "releaseId": "rxscan-core-2.10.0@2026.08.08.1+1f082bcf180b",
+  "schemaVersion": "1.0.0",
+  "warningDispositions": []
+}
