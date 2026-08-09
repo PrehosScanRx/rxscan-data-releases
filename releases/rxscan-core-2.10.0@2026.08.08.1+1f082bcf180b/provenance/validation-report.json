@@ -1,0 +1,13 @@
+{
+  "checks": {
+    "canonical": true,
+    "forbiddenFields": true,
+    "profiles": true,
+    "uniqueMedicationIds": true,
+    "uniqueRxIds": true
+  },
+  "generatedAt": "2026-08-08T00:00:00.000Z",
+  "recordCount": 611,
+  "schemaVersion": "1.0.0",
+  "valid": true
+}

@@ -1,0 +1,110 @@
+{
+  "approvalState": "candidate",
+  "compatibility": {
+    "manifestSchema": "1.x",
+    "offlineCapable": true,
+    "profiles": {
+      "guide@1": {
+        "minimumAppVersion": "1.0.0"
+      },
+      "paramedic@1": {
+        "minimumAppVersion": "1.0.0"
+      }
+    }
+  },
+  "coreVersion": "2.10.0",
+  "files": [
+    {
+      "bytes": 504620,
+      "languages": [
+        "en-CA",
+        "fr-CA"
+      ],
+      "mediaType": "application/json",
+      "path": "profiles/guide@1/medication-directory.json",
+      "recordCount": 611,
+      "required": true,
+      "role": "consumer-profile",
+      "sha256": "db13a8a9c61e2650810492f0abb35df834677196c23c0ff11f77ffa6e13d56cb"
+    },
+    {
+      "bytes": 477740,
+      "languages": [
+        "en-CA",
+        "fr-CA"
+      ],
+      "mediaType": "application/json",
+      "path": "profiles/paramedic@1/medication-directory.json",
+      "recordCount": 611,
+      "required": true,
+      "role": "consumer-profile",
+      "sha256": "c7f8421b95c380ff9bc58a39c9a256e0da385d201613178a15a6ed165e0603ab"
+    },
+    {
+      "bytes": 203,
+      "mediaType": "application/json",
+      "path": "provenance/comparison-report.json",
+      "recordCount": 1,
+      "required": true,
+      "role": "comparison-evidence",
+      "sha256": "b9bdbad173ac37b200af8fc6d737c3608e9cd58ccc7a796810e9a45b85607fe6"
+    },
+    {
+      "bytes": 218,
+      "mediaType": "application/json",
+      "path": "provenance/core-manifest.json",
+      "recordCount": 1,
+      "required": true,
+      "role": "provenance",
+      "sha256": "e45c515d244407f08939f96135e707bd3e28ab0a658fbe1333caa6995cf0e184"
+    },
+    {
+      "bytes": 265,
+      "mediaType": "application/json",
+      "path": "provenance/validation-report.json",
+      "recordCount": 1,
+      "required": true,
+      "role": "validation-evidence",
+      "sha256": "cc8d8236f7657b169e807feec49967f0f31d012067645f3fe20cbb2c7aef2f77"
+    }
+  ],
+  "generatedAt": "2026-08-08T00:00:00.000Z",
+  "previousReleaseId": "rxscan-core-2.0.0@2026.08.06.1+59fe6cd1f33f",
+  "profiles": [
+    {
+      "name": "guide",
+      "path": "profiles/guide@1/",
+      "version": "1.0.0"
+    },
+    {
+      "name": "paramedic",
+      "path": "profiles/paramedic@1/",
+      "version": "1.0.0"
+    }
+  ],
+  "provenance": [
+    {
+      "path": "provenance/core-manifest.json",
+      "type": "catalog-manifest"
+    },
+    {
+      "path": "provenance/comparison-report.json",
+      "type": "comparison-report"
+    },
+    {
+      "path": "provenance/validation-report.json",
+      "type": "validation-report"
+    }
+  ],
+  "releaseChannel": "unassigned",
+  "releaseId": "rxscan-core-2.10.0@2026.08.08.1+1f082bcf180b",
+  "releaseNotes": {
+    "en-CA": "RxScan Core 2.10.0 medication identities.",
+    "fr-CA": "Identités médicamenteuses RxScan Core 2.10.0."
+  },
+  "rollbackTarget": null,
+  "schemaVersion": "1.0.0",
+  "sourceCommit": "bce5940b201d343c25a3ae93767dd169b3334142",
+  "sourceRepository": "PrehosScanRx/RxScan-data",
+  "warnings": []
+}
