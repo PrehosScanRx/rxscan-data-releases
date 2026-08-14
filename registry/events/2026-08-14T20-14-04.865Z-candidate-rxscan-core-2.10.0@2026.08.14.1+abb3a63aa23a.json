@@ -1,0 +1,9 @@
+{
+  "actor": "Codex publication closure",
+  "eventId": "2026-08-14T20-14-04.865Z-candidate-rxscan-core-2.10.0@2026.08.14.1+abb3a63aa23a",
+  "occurredAt": "2026-08-14T20:14:04.865Z",
+  "reason": "Development channel publication",
+  "releaseId": "rxscan-core-2.10.0@2026.08.14.1+abb3a63aa23a",
+  "schemaVersion": "1.0.0",
+  "state": "candidate"
+}
